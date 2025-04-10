@@ -55,54 +55,26 @@ This guide will walk you through the steps to install MySQL Workbench, MySQL Ser
    mysql --version
    ```
 
-## Step 3: Install Backend Packages with Express and Prisma
+## Step 3: Install dependencies and Run the Application
 
-1. Make sure you have Node.js and npm installed on your system. If not, you can install them from:
-   https://nodejs.org/
+Clone clone the the repository then install the package
 
-2. Navigate to your project directory and initialize a new Node.js project if you haven't done so already:
-
-   ```bash
-   npm init -y
-   ```
-
-3. Install Express:
-
-   ```bash
-   npm install express
-   ```
-
-4. Install Prisma and the MySQL client for Prisma:
-
-   ```bash
-   npm install prisma @prisma/client
-   ```
-
-5. Initialize Prisma in your project:
-
-   ```bash
-   npx prisma init
-   ```
-
-6. Open the `prisma/schema.prisma` file and update the datasource section to use MySQL:
-
-   ```prisma
-   datasource db {
-     provider = "mysql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-
-7. Set your database connection string in the `.env` file (created by Prisma during initialization):
-
-```env
-   DATABASE_URL="mysql://root:your_password@localhost:3306/your_database"
+```
+ npm install
 ```
 
-8. Now, you can generate the Prisma client:
+##
 
-```bash
-   npx prisma generate
+Generate the prisma
+
+```
+npx prisma generate
+```
+
+Run the application
+
+```
+npm run dev
 ```
 
 ## Conclusion
