@@ -1,4 +1,4 @@
-# MySQL Workbench and MySQL Server Installation Guide
+## MySQL Workbench and MySQL Server Installation Guide
 
 This guide will walk you through the steps to install MySQL Workbench, MySQL Server, and the backend packages required for your project using Express and Prisma.
 

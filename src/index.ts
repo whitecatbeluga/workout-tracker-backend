@@ -9,6 +9,7 @@ import userRoute from "./routes/user/user-route";
 dotevn.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,5 +18,5 @@ app.use(cookieParser());
 app.use("/", userRoute);
 
 app.listen(8080, () => {
-  console.log(`Server is running on http://localhost:8080`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
