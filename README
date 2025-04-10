@@ -95,15 +95,15 @@ This guide will walk you through the steps to install MySQL Workbench, MySQL Ser
 
 7. Set your database connection string in the `.env` file (created by Prisma during initialization):
 
-   ```env
+```env
    DATABASE_URL="mysql://root:your_password@localhost:3306/your_database"
-   ```
+```
 
 8. Now, you can generate the Prisma client:
 
-   ```bash
+```bash
    npx prisma generate
-   ```
+```
 
 ## Conclusion
 
