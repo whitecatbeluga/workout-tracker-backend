@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int              @id @default(autoincrement())
+  name             String
+  last_name        String
+  address          String
+  user_name        String
+  email            String           @unique
+  password         String
+  gender           String
+  age              Int
+  height           Float
+  weight           Float
+  bmi              Float
+  activity_level   Int
+  user_type        String
+  preferred_sports UserSportPivot[]
+}
+
+model UserSports {
+  id         Int              @id @default(autoincrement())
+  sportId    Int
+  sport_name String
+  users      UserSportPivot[]
+}
+
+model UserSportPivot {
+  id      Int        @id @default(autoincrement())
+  user    User       @relation(fields: [userId], references: [id])
+  userId  Int
+  sport   UserSports @relation(fields: [sportId], references: [id])
+  sportId Int
+}

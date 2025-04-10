@@ -1,0 +1,5 @@
+when you update the model
+
+npx prisma migrate dev --create-only - create a migration file
+
+npx prisma migrate dev - migrate the file
