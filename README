@@ -60,6 +60,10 @@ This guide will walk you through the steps to install MySQL Workbench, MySQL Ser
 Clone clone the the repository then install the package
 
 ```
+https://github.com/whitecatbeluga/workout-tracker-backend
+```
+
+```
  npm install
 ```
 
