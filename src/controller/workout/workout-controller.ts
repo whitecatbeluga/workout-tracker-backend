@@ -71,7 +71,6 @@ export const createWorkout = async (req: Request, res: Response) => {
 
     return res.status(201).json(newWorkout);
   } catch (error) {
-    console.log("error", error);
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
@@ -161,7 +160,7 @@ export const deleteWorkout = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await WorkoutService.deletedById(parseInt(id));
+    await WorkoutService.deleteById(parseInt(id));
 
     return res.status(200).json({ message: "Workout successfully deleted" });
   } catch (error) {

@@ -35,11 +35,10 @@ export const updateById = async (
   return updatedWorkout;
 };
 
-export const deletedById = async (id: number) => {
+export const deleteById = async (id: number) => {
   const existingWorkout = await WorkoutRepository.getById(id);
   if (!existingWorkout) {
     throw new CustomError("Workout doesn't exist.", 400);
   }
-  const deletedWorkout = await WorkoutRepository.deletedById(id);
-  return deletedWorkout;
+  return await WorkoutRepository.deleteById(id);
 };

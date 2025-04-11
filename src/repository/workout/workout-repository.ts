@@ -99,7 +99,7 @@ export const updateById = async (
   return updatedWorkout;
 };
 
-export const deletedById = async (id: number) => {
+export const deleteById = async (id: number) => {
   return await prisma.workout.delete({
     where: {
       id,
