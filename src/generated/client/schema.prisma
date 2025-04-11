@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  first_name     String
+  last_name      String
+  address        String
+  user_name      String
+  email          String   @unique
+  password       String
+  gender         String
+  age            Int
+  height         Float
+  weight         Float
+  bmi            Float
+  activity_level Int
+  user_type      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  preferred_sports UserSportPivot[]
+  workouts         Workout[]
+  routines         Routine[]
+  userBadges       UserBadges[]
+}
+
+model Routine {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  description          String
+  userId               Int
+  user                 User                   @relation(fields: [userId], references: [id])
+  workouts             RoutineWorkoutPivot[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  RoutineExercisePivot RoutineExercisePivot[]
+}
+
+model Workout {
+  id                  Int                    @id @default(autoincrement())
+  userId              Int
+  name                String
+  description         String
+  duration            Int
+  intensity           Int
+  volumn              Int
+  set                 Int
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  user                User                   @relation(fields: [userId], references: [id])
+  RoutineWorkoutPivot RoutineWorkoutPivot[]
+  exercises           WorkoutExercisePivot[]
+}
+
+model UserSports {
+  id         Int              @id @default(autoincrement())
+  sportId    Int
+  sport_name String
+  users      UserSportPivot[]
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+model Exercise {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  description          String
+  category             String
+  with_out_equipment   Boolean
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  WorkoutExercisePivot WorkoutExercisePivot[]
+  RoutineExercisePivot RoutineExercisePivot[]
+}
+
+model UserBadges {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bardgeId  Int
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id])
+  badge Badges @relation(fields: [bardgeId], references: [badgeId])
+}
+
+model Badges {
+  badgeId           Int          @id @default(autoincrement())
+  name              String
+  description       String       @db.Text
+  requirement_type  String
+  requirement_value Int
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  userBadges        UserBadges[]
+}
+
+model UserSportPivot {
+  id        Int        @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    Int
+  sport     UserSports @relation(fields: [sportId], references: [id])
+  sportId   Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model RoutineWorkoutPivot {
+  id        Int     @id @default(autoincrement())
+  routineId Int
+  workoutId Int
+  routine   Routine @relation(fields: [routineId], references: [id])
+  workout   Workout @relation(fields: [workoutId], references: [id])
+}
+
+model WorkoutExercisePivot {
+  id         Int      @id @default(autoincrement())
+  workoutId  Int
+  exerciseId Int
+  workout    Workout  @relation(fields: [workoutId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  @@unique([workoutId, exerciseId])
+}
+
+model RoutineExercisePivot {
+  id         Int      @id @default(autoincrement())
+  routineId  Int
+  exerciseId Int
+  routine    Routine  @relation(fields: [routineId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  @@unique([routineId, exerciseId])
+}

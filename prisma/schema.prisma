@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/client"
 }
 
 datasource db {
@@ -28,6 +29,7 @@ model User {
   preferred_sports UserSportPivot[]
   workouts         Workout[]
   routines         Routine[]
+  userBadges       UserBadges[]
 }
 
 model Routine {
@@ -77,6 +79,28 @@ model Exercise {
   updatedAt            DateTime               @updatedAt
   WorkoutExercisePivot WorkoutExercisePivot[]
   RoutineExercisePivot RoutineExercisePivot[]
+}
+
+model UserBadges {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bardgeId  Int
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id])
+  badge Badges @relation(fields: [bardgeId], references: [badgeId])
+}
+
+model Badges {
+  badgeId           Int          @id @default(autoincrement())
+  name              String
+  description       String       @db.Text
+  requirement_type  String
+  requirement_value Int
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  userBadges        UserBadges[]
 }
 
 model UserSportPivot {
