@@ -85,10 +85,13 @@ async function main() {
     description: `${exercise.name} exercise description`,
   }));
 
-  await prisma.exercise.createMany({
-    data: exercises,
-    skipDuplicates: true,
-  });
+  const exerciseExists = prisma.exercise.findFirst({});
+  if (!exerciseExists) {
+    await prisma.exercise.createMany({
+      data: exercises,
+      skipDuplicates: true,
+    });
+  }
 
   console.log("✅ Seed data inserted!");
 }
