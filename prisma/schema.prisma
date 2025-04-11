@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id             Int      @id @default(autoincrement())
-  name           String
+  first_name     String
   last_name      String
   address        String
   user_name      String
@@ -101,6 +101,8 @@ model WorkoutExercisePivot {
   exerciseId Int
   workout    Workout  @relation(fields: [workoutId], references: [id])
   exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  @@unique([workoutId, exerciseId])
 }
 
 model RoutineExercisePivot {

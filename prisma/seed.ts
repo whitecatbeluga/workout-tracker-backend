@@ -19,7 +19,7 @@ async function main() {
   // Create user
   const user = await prisma.user.create({
     data: {
-      name: "John",
+      first_name: "John",
       last_name: "Doe",
       address: "123 Main St",
       user_name: "john_doe",
@@ -47,6 +47,43 @@ async function main() {
         sportId: basketball.id,
       },
     ],
+  });
+
+  // Create exercises
+  const exercises = [
+    "Push-Up",
+    "Pull-Up",
+    "Bench Press",
+    "Deadlift",
+    "Squat",
+    "Overhead Press",
+    "Bicep Curl",
+    "Tricep Extension",
+    "Lunges",
+    "Plank",
+    "Mountain Climbers",
+    "Jumping Jacks",
+    "Burpees",
+    "Russian Twists",
+    "Leg Raises",
+    "Cable Row",
+    "Incline Press",
+    "Dumbbell Fly",
+    "Front Squat",
+    "Calf Raise",
+    "Lat Pulldown",
+    "Leg Press",
+    "Chest Dip",
+    "Hip Thrust",
+    "Hammer Curl",
+  ].map((name, index) => ({
+    name,
+    description: `${name} exercise description`,
+  }));
+
+  await prisma.exercise.createMany({
+    data: exercises,
+    skipDuplicates: true,
   });
 
   console.log("✅ Seed data inserted!");
