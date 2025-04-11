@@ -67,6 +67,16 @@ model UserSports {
   updatedAt  DateTime         @updatedAt
 }
 
+model Exercise {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  description          String
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  WorkoutExercisePivot WorkoutExercisePivot[]
+  RoutineExercisePivot RoutineExercisePivot[]
+}
+
 model UserSportPivot {
   id        Int        @id @default(autoincrement())
   user      User       @relation(fields: [userId], references: [id])
@@ -83,16 +93,6 @@ model RoutineWorkoutPivot {
   workoutId Int
   routine   Routine @relation(fields: [routineId], references: [id])
   workout   Workout @relation(fields: [workoutId], references: [id])
-}
-
-model Exercise {
-  id                   Int                    @id @default(autoincrement())
-  name                 String
-  description          String
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  WorkoutExercisePivot WorkoutExercisePivot[]
-  RoutineExercisePivot RoutineExercisePivot[]
 }
 
 model WorkoutExercisePivot {
