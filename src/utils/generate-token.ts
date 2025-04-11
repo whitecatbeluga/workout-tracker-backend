@@ -1,4 +1,3 @@
-import { UserType } from "../types/user-type";
 import jwt from "jsonwebtoken";
 
 interface UserTokenType {
