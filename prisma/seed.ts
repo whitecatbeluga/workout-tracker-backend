@@ -85,6 +85,19 @@ async function main() {
     description: `${exercise.name} exercise description`,
   }));
 
+  // Reset the auto increment back to default 0-1
+  // Optional: Disable safe updates temporarily (though usually not needed in Prisma)
+  // await prisma.$executeRawUnsafe(`SET SQL_SAFE_UPDATES = 0`);
+
+  // // Delete all records
+  // await prisma.exercise.deleteMany();
+
+  // // Reset AUTO_INCREMENT to 1
+  // await prisma.$executeRawUnsafe(`ALTER TABLE Exercise AUTO_INCREMENT = 1`);
+
+  // // Optional: Re-enable safe updates
+  // await prisma.$executeRawUnsafe(`SET SQL_SAFE_UPDATES = 1`);
+
   const exerciseExists = prisma.exercise.findFirst({});
   if (!exerciseExists) {
     await prisma.exercise.createMany({
