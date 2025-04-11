@@ -48,7 +48,6 @@ export const createRoutine = async (req: Request, res: Response) => {
 
     return res.json(newRoutine);
   } catch (error) {
-    console.log("error", error);
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
