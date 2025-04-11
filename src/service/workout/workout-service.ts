@@ -1,7 +1,6 @@
 import * as WorkoutRepository from "../../repository/workout/workout-repository";
 import CustomError from "../../utils/custom-error";
 import { WorkoutType } from "../../types/workout-type";
-import { Exercises } from "../../types/exercises-type";
 
 export const getWorkout = async () => {
   return await WorkoutRepository.getWorkout();
