@@ -167,7 +167,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({
         message: "Validation error",
         errors: error.inner.map((err) => err.message), // Gather all error messages
-      });
+      });   
     }
 
     if (error instanceof CustomError) {

@@ -91,7 +91,6 @@ export const getById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const workout = await WorkoutService.getById(parseInt(id));
-    console.log(workout);
     return res.json(workout);
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -141,7 +140,6 @@ export const updateWorkout = async (req: Request, res: Response) => {
       .status(200)
       .json({ message: "Workout successfully updated", updatedWorkout });
   } catch (error) {
-    console.log("error", error);
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
