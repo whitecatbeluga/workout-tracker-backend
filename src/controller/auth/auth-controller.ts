@@ -11,6 +11,7 @@ import {
 } from "../../utils/generate-token";
 import { ValidationError } from "yup";
 import CustomError from "../../utils/custom-error";
+import { UserType } from "../../types/user-type";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -167,7 +168,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({
         message: "Validation error",
         errors: error.inner.map((err) => err.message), // Gather all error messages
-      });   
+      });
     }
 
     if (error instanceof CustomError) {
@@ -176,4 +177,61 @@ export const register = async (req: Request, res: Response) => {
 
     return res.status(500).json({ message: "Something went wrong." });
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.cookie("authToken", "none", {
+      httpOnly: true,
+      maxAge: 0,
+      secure: true,
+      sameSite: "none",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+export const refreshToken = async (req: Request, res: Response) => {
+  const cookie = req.cookies;
+  if (cookie.authToken === undefined) {
+    return res.status(401).json({ message: "Unauthorized." });
+  }
+  jwt.verify(
+    cookie.authToken,
+    process.env.SECRET_TOKEN as string,
+    async (error: unknown, decoded: unknown) => {
+      if (error != null) return res.status(403).json({ message: "Forbidden" });
+      const decodedToken = decoded as UserType;
+      const user = await prisma.user.findFirst({
+        where: {
+          email: decodedToken.email,
+        },
+      });
+
+      if (user == null) {
+        return res.status(400).json({ message: "User not found." });
+      }
+      const access_token = generateRefreshToken(user);
+
+      res.json({
+        access_token,
+        user: {
+          id: user.id,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          address: user.address,
+          user_name: user.user_name,
+          gender: user.gender,
+          age: user.age,
+          height: user.height,
+          weight: user.weight,
+          bmi: user.bmi,
+          activity_level: user.activity_level,
+          user_type: user.user_type,
+        },
+      });
+    }
+  );
 };
