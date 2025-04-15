@@ -2,8 +2,11 @@ import prisma from "../../utils/prisma";
 import { WorkoutType } from "../../types/workout-type";
 import CustomError from "../../utils/custom-error";
 
-export const getWorkout = async () => {
+export const getWorkout = async (userId: number) => {
   return await prisma.workout.findMany({
+    where: {
+      userId,
+    },
     include: {
       exercises: {
         include: {

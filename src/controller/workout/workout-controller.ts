@@ -7,13 +7,14 @@ import { ValidationError } from "yup";
 import CustomError from "../../utils/custom-error";
 
 export const getWorkout = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
   if (!req.user || !req.user.id) {
     return res
       .status(400)
       .json({ message: "User not authenticated or user ID not found" });
   }
 
-  const userWorkout = await WorkoutService.getWorkout();
+  const userWorkout = await WorkoutService.getWorkout(userId);
 
   if (!userWorkout) {
     return res
