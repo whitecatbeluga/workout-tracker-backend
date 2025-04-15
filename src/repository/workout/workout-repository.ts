@@ -83,7 +83,7 @@ export const updateById = async (
         description: workout.description,
         duration: workout.duration,
         intensity: workout.intensity,
-        volumn: workout.volumn,
+        volume: workout.volume,
         set: workout.set,
       },
       include: {

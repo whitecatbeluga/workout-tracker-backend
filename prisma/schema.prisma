@@ -51,7 +51,7 @@ model Workout {
   description         String
   duration            Int
   intensity           Int
-  volumn              Int
+  volume              Int
   set                 Int
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt

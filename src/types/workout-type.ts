@@ -3,6 +3,6 @@ export interface WorkoutType {
   description: string;
   duration: number;
   intensity: number;
-  volumn: number;
+  volume: number;
   set: number;
 }

@@ -18,6 +18,13 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (process.env.DEV === "TRUE") {
+      await authLoginSchema.validate(
+        {
+          email,
+          password,
+        },
+        { abortEarly: false }
+      );
       const user = await prisma.user.findUnique({
         where: { email },
       });
@@ -43,19 +50,25 @@ export const login = async (req: Request, res: Response) => {
       }
     }
 
-    await authLoginSchema.validate({ email, password });
+    await authLoginSchema.validate(
+      {
+        email,
+        password,
+      },
+      { abortEarly: false }
+    );
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { email },
     });
 
-    if (!user) {
+    if (user == null) {
       return res.status(404).json({ message: "User not found." });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Password is wrong." });
     }
 
     const access_token = generateToken(user);
@@ -187,6 +200,7 @@ export const logout = async (req: Request, res: Response) => {
       secure: true,
       sameSite: "none",
     });
+    res.status(200).json({ message: "Logout successfully." });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }
