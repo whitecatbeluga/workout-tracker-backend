@@ -5,7 +5,7 @@ export const workoutSchema = object().shape({
   description: string().required("Description is required"),
   duration: number().required("Duration is required"),
   intensity: number().required("Intensity is required"),
-  volumn: number().required("Volumn is required"),
+  volume: number().required("Volume is required"),
   set: number().required("Set is required"),
   exerciseIds: array()
     .of(number().required("Each exercise ID must be a number"))

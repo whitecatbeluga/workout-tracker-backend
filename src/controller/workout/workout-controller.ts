@@ -28,7 +28,7 @@ export const createWorkout = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
 
-    const { name, description, duration, intensity, volumn, set, exerciseIds } =
+    const { name, description, duration, intensity, volume, set, exerciseIds } =
       req.body;
     await workoutSchema.validate(
       {
@@ -36,7 +36,7 @@ export const createWorkout = async (req: Request, res: Response) => {
         description,
         duration,
         intensity,
-        volumn,
+        volume,
         set,
         exerciseIds,
       },
@@ -50,7 +50,7 @@ export const createWorkout = async (req: Request, res: Response) => {
         description,
         duration,
         intensity,
-        volumn,
+        volume,
         set,
         exercises: {
           create: exerciseIds.map((exerciseId: number) => ({
@@ -111,14 +111,14 @@ export const getById = async (req: Request, res: Response) => {
 export const updateWorkout = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, description, duration, intensity, volumn, set, exerciseIds } =
+    const { name, description, duration, intensity, volume, set, exerciseIds } =
       req.body;
     await workoutSchema.validate({
       name,
       description,
       duration,
       intensity,
-      volumn,
+      volume,
       set,
       exerciseIds,
     });
@@ -130,7 +130,7 @@ export const updateWorkout = async (req: Request, res: Response) => {
         description,
         duration,
         intensity,
-        volumn,
+        volume,
         set,
       },
       exerciseIds
