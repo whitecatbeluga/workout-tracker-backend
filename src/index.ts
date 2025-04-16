@@ -10,6 +10,7 @@ import { authMiddleware } from "./middleware/auth-middleware";
 import authRoute from "./routes/auth/auth-route";
 import workoutRoute from "./routes/workout/workout-route";
 import routineRoute from "./routes/routine/routine-route";
+import exerciseRoute from "./routes/exercise/exercise-route";
 
 dotevn.config();
 
@@ -35,6 +36,7 @@ declare global {
 
 app.use("/auth", authRoute);
 app.use("/", userRoute);
+app.use("/exercise", authMiddleware as any, exerciseRoute);
 app.use("/workout", authMiddleware as any, workoutRoute);
 app.use("/routine", authMiddleware as any, routineRoute);
 
