@@ -7,6 +7,9 @@ export const getWorkout = async (userId: number) => {
     where: {
       userId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
     include: {
       exercises: {
         include: {
