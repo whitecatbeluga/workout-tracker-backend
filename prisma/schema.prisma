@@ -23,6 +23,7 @@ model User {
   bmi            Float
   activity_level Int
   user_type      String
+  access_token   String?  @db.Text
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
