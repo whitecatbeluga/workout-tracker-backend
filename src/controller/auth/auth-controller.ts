@@ -33,6 +33,15 @@ export const login = async (req: Request, res: Response) => {
         const access_token = generateToken(user);
         const refresh_token = generateRefreshToken(user);
 
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            access_token,
+          },
+        });
+
         res.cookie("authToken", refresh_token, {
           httpOnly: true,
           maxAge: ms("1h"),
@@ -74,6 +83,15 @@ export const login = async (req: Request, res: Response) => {
     const access_token = generateToken(user);
     const refresh_token = generateRefreshToken(user);
 
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        access_token,
+      },
+    });
+
     res.cookie("authToken", refresh_token, {
       httpOnly: true,
       maxAge: ms("1h"),
@@ -96,7 +114,7 @@ export const login = async (req: Request, res: Response) => {
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
-        errors: error.inner.map((err) => err.message), // Gather all error messages
+        errors: error.inner.map((err) => err.message),
       });
     }
 
@@ -180,7 +198,7 @@ export const register = async (req: Request, res: Response) => {
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
-        errors: error.inner.map((err) => err.message), // Gather all error messages
+        errors: error.inner.map((err) => err.message),
       });
     }
 
@@ -194,15 +212,40 @@ export const register = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(
+      token,
+      process.env.SECRET_TOKEN!
+    ) as jwt.JwtPayload;
+    const userId = decoded.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        access_token: null,
+      },
+    });
+
     res.cookie("authToken", "none", {
       httpOnly: true,
       maxAge: 0,
       secure: true,
       sameSite: "none",
     });
+
     res.status(200).json({ message: "Logout successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
