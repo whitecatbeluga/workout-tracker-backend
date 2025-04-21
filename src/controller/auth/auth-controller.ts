@@ -111,11 +111,10 @@ export const login = async (req: Request, res: Response) => {
       user: { ...user, password: undefined },
     });
   } catch (error) {
-    console.log("error", error);
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
-        errors: error.inner.map((err) => err.message), // Gather all error messages
+        errors: error.inner.map((err) => err.message),
       });
     }
 
@@ -199,7 +198,7 @@ export const register = async (req: Request, res: Response) => {
     if (error instanceof ValidationError) {
       return res.status(400).json({
         message: "Validation error",
-        errors: error.inner.map((err) => err.message), // Gather all error messages
+        errors: error.inner.map((err) => err.message),
       });
     }
 
@@ -213,7 +212,6 @@ export const register = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    // Get token from header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "No token provided" });
@@ -221,7 +219,6 @@ export const logout = async (req: Request, res: Response) => {
 
     const token = authHeader.split(" ")[1];
 
-    // Decode token to get user id
     const decoded = jwt.verify(
       token,
       process.env.SECRET_TOKEN!
@@ -232,7 +229,6 @@ export const logout = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    // Update user's access_token to null
     await prisma.user.update({
       where: { id: userId },
       data: {
@@ -240,7 +236,6 @@ export const logout = async (req: Request, res: Response) => {
       },
     });
 
-    // Clear cookie (optional if you're using cookies too)
     res.cookie("authToken", "none", {
       httpOnly: true,
       maxAge: 0,
